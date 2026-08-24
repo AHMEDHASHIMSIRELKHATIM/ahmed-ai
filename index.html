@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ahmed AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="app">
+
+        <!-- Header -->
+        <header class="top-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    A
+                </div>
+
+                <div class="brand-text">
+                    <h2>Ahmed AI</h2>
+                    <span>AI Assistant</span>
+                </div>
+
+            </div>
+
+            <div class="online-status">
+                <span class="status-dot"></span>
+                Online
+            </div>
+
+        </header>
+
+
+        <!-- Chat Area -->
+        <section class="chat-area">
+
+            <div class="welcome">
+
+                <div class="ai-logo">
+                    A<span>AI</span>
+                </div>
+
+                <h1>How can I help you?</h1>
+
+                <p>
+                    Ask Ahmed AI anything. I'm here to help you learn,
+                    create and solve problems.
+                </p>
+
+            </div>
+
+
+            <div id="chat-box" class="chat-box">
+
+                <div class="message bot-message">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <div class="message-text">
+                        Hello 👋 I'm <strong>Ahmed AI</strong>.
+                        What can I help you with today?
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Input -->
+        <footer class="input-section">
+
+            <div class="input-box">
+
+                <input
+                    type="text"
+                    id="user-input"
+                    placeholder="Message Ahmed AI..."
+                    autocomplete="off"
+                >
+
+                <button
+                    class="send-button"
+                    onclick="sendMessage()"
+                    aria-label="Send message"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+            <p class="disclaimer">
+                Ahmed AI can make mistakes. Check important information.
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
