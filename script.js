@@ -1,117 +1,101 @@
 const input = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
 
-function sendMessage() {
+const WORKER_URL = "https://ahmed-ai.ahmedoxdox10.workers.dev/";
 
+async function sendMessage() {
     const message = input.value.trim();
 
-    if (message === "") {
+    if (!message) {
         return;
     }
 
-    // Add user message
+    // Show user's message
     addMessage(message, "user");
-
-    // Clear input
     input.value = "";
 
-    // Temporary AI reply
-    setTimeout(() => {
+    // Show thinking message
+    const thinkingMessage = addMessage("Thinking... 🤔", "bot");
 
-        let reply = getAIResponse(message);
+    try {
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Worker returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Remove "Thinking..."
+        thinkingMessage.remove();
+
+        // Show AI response
+        const reply =
+            data.reply ||
+            data.message ||
+            data.response ||
+            "I didn't receive a response from the AI.";
 
         addMessage(reply, "bot");
 
-    }, 600);
+    } catch (error) {
+        console.error("Ahmed AI Error:", error);
+
+        thinkingMessage.remove();
+
+        addMessage(
+            "Sorry 😕 I couldn't connect to Ahmed AI right now. Please try again.",
+            "bot"
+        );
+    }
 }
 
-
 function addMessage(text, type) {
-
     const message = document.createElement("div");
-
     message.classList.add("message");
 
     if (type === "user") {
-
         message.classList.add("user-message");
 
         message.innerHTML = `
             <div class="message-text">
-                ${text}
+                ${escapeHTML(text)}
             </div>
         `;
-
     } else {
-
         message.classList.add("bot-message");
 
         message.innerHTML = `
-            <div class="avatar">
-                A
-            </div>
-
+            <div class="avatar">A</div>
             <div class="message-text">
-                ${text}
+                ${escapeHTML(text)}
             </div>
         `;
     }
 
     chatBox.appendChild(message);
-
-    // Scroll to latest message
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    return message;
 }
 
-
-/*
-    Temporary AI brain
-    We will replace this with a real AI API later.
-*/
-
-function getAIResponse(message) {
-
-    const text = message.toLowerCase();
-
-    if (
-        text.includes("hello") ||
-        text.includes("hi") ||
-        text.includes("hey")
-    ) {
-        return "Hello 👋 I'm Ahmed AI. How can I help you today?";
-    }
-
-    if (text.includes("who are you")) {
-        return "I'm Ahmed AI 🤖, your personal AI assistant.";
-    }
-
-    if (text.includes("how are you")) {
-        return "I'm doing great 😎. Thanks for asking!";
-    }
-
-    if (
-        text.includes("thank you") ||
-        text.includes("thanks")
-    ) {
-        return "You're welcome! ❤️";
-    }
-
-    if (text.includes("bye")) {
-        return "See you later 👋. Take care!";
-    }
-
-    return "That's interesting 🤔. I'm still learning. Soon I'll be able to give you much smarter answers.";
+function escapeHTML(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
 }
 
-
-/*
-    Press Enter to send
-*/
-
+// Press Enter to send
 input.addEventListener("keydown", function(event) {
-
     if (event.key === "Enter") {
         sendMessage();
     }
-
 });
