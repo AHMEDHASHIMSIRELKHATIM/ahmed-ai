@@ -10,11 +10,9 @@ async function sendMessage() {
         return;
     }
 
-    // Show user's message
     addMessage(message, "user");
     input.value = "";
 
-    // Show thinking message
     const thinkingMessage = addMessage("Thinking... 🤔", "bot");
 
     try {
@@ -34,10 +32,8 @@ async function sendMessage() {
 
         const data = await response.json();
 
-        // Remove "Thinking..."
         thinkingMessage.remove();
 
-        // Show AI response
         const reply =
             data.reply ||
             data.message ||
@@ -93,7 +89,6 @@ function escapeHTML(text) {
     return div.innerHTML;
 }
 
-// Press Enter to send
 input.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         sendMessage();
